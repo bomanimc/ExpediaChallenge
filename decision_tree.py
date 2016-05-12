@@ -27,14 +27,19 @@ def visualize_tree(tree, feature_names):
              "produce visualization")
 
 # Load in the testing and training datasets
-trainFull = pd.read_csv("data/train.csv", parse_dates=['srch_ci', 'srch_co'], nrows=10000)
+trainFull = pd.read_csv("data/train.csv", nrows=10000)
 
 # Take subsets of the datasets for training and testing
 train = trainFull.sample(1000)
 test_set = trainFull.sample(1000)
 
 # Set a list of features to be considered in the tree
-features = ["site_name", "hotel_market"]
+features = trainFull.columns.values.tolist()
+removelist  =  ["hotel_cluster", "user_id", "date_time", 
+"orig_destination_distance", "srch_ci", "srch_co"]
+features = [column for column in features if column not in removelist]
+print("The features considered are:")
+print(features)
 
 # Create and fit a decision tree to the set of data in those features
 y = train["hotel_cluster"]
