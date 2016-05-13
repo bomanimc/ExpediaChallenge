@@ -1,4 +1,5 @@
 booking_only.csv
+booking_no_empty.csv
 /data
 /output
 .DS_Store
