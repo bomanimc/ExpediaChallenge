@@ -31,7 +31,7 @@ trainFull = pd.read_csv("data/train.csv", nrows=100000)
 
 # Take subsets of the datasets for training and testing
 train = trainFull[:80000].sample(10000)
-test_set = trainFull[:20000].sample(10000)
+test_set = trainFull[80000:].sample(10000)
 
 # Set a list of features to be considered in the tree
 features = trainFull.columns.values.tolist()
