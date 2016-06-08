@@ -4,19 +4,18 @@ import os
 import subprocess
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import classification_report
 
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 
 
 # Load in the testing and training datasets
-trainFull = pd.read_csv("data/train.csv", nrows=100000)
+trainFull = pd.read_csv("data/train.csv", nrows=1000000)
 
 # Take subsets of the datasets for training and testing
-train = trainFull[:80000].sample(10000)
-test_set = trainFull[80000:].sample(10000)
+train = trainFull[:800000].sample(100000)
+test_set = trainFull[800000:].sample(100000)
 
 # Set a list of features to be considered in the tree
 features = trainFull.columns.values.tolist()
@@ -29,12 +28,16 @@ print(features)
 # Create and fit a decision tree to the set of data in those features
 y = trainFull["hotel_cluster"] 
 X = trainFull[features]
-ovr = OneVsRestClassifier(KNeighborsClassifier(n_neighbors=25, weights='distance', algorithm='kd_tree', n_jobs=-1), n_jobs=-1)
+ovr = OneVsRestClassifier(RandomForestClassifier(n_estimators=10, n_jobs=-1, max_features=None), n_jobs=-1)
 ovr.fit(X, y)
 
-# Score ability to predict the right hotel clust for a new subset
+# Measure ability to predict the right hotel clust for a new subset
 testX = test_set[features]
 testy = test_set["hotel_cluster"]
-score = ovr.score(testX, testy)
+prediction = ovr.predict(testX)
 
+report = classification_report(testy, prediction, digits=5)
+print(report)
+
+score = ovr.score(testX, testy)
 print("Score is " + str(score))
