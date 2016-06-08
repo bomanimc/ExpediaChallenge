@@ -3,6 +3,7 @@ from __future__ import print_function
 import os
 import subprocess
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report
 
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
@@ -29,9 +30,12 @@ X = trainFull[features]
 kn = KNeighborsClassifier(n_neighbors=25, weights='distance', algorithm='kd_tree', n_jobs=-1)
 kn.fit(X, y)
 
-# Score ability to predict the right hotel clust for a new subset
+# Measure ability to predict the right hotel clust for a new subset
 testX = test_set[features]
 testy = test_set["hotel_cluster"]
-score = kn.score(testX, testy)
+prediction = kn.predict(testX)
+
+report = classification_report(testy, prediction)
+print(report)
 
 print("Score is " + str(score))
