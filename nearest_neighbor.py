@@ -35,7 +35,8 @@ testX = test_set[features]
 testy = test_set["hotel_cluster"]
 prediction = kn.predict(testX)
 
-report = classification_report(testy, prediction)
+report = classification_report(testy, prediction, digits=5)
 print(report)
 
+score = kn.score(testX, testy)
 print("Score is " + str(score))

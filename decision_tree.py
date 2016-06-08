@@ -3,6 +3,8 @@ from __future__ import print_function
 import os
 import subprocess
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
+from sklearn.metrics import classification_report
+
 
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
@@ -27,11 +29,11 @@ def visualize_tree(tree, feature_names):
              "produce visualization")
 
 # Load in the testing and training datasets
-trainFull = pd.read_csv("data/train.csv", nrows=100000)
+trainFull = pd.read_csv("data/train.csv", nrows=1000000)
 
 # Take subsets of the datasets for training and testing
-train = trainFull[:80000].sample(10000)
-test_set = trainFull[80000:].sample(10000)
+train = trainFull[:800000].sample(100000)
+test_set = trainFull[800000:].sample(100000)
 
 # Set a list of features to be considered in the tree
 features = trainFull.columns.values.tolist()
@@ -48,14 +50,18 @@ dt = DecisionTreeClassifier(min_samples_split=20)
 dt.fit(X, y)
 
 # Make a visualization of the decision tree
-visualize_tree(dt, features)
+# visualize_tree(dt, features)
 
 # Print the Unique Classes
 print("Unique Classes: {}".format(dt.classes_))
 
-# Score ability to predict the right hotel clust for a new subset
+# Measure ability to predict the right hotel clust for a new subset
 testX = test_set[features]
 testy = test_set["hotel_cluster"]
-score = dt.score(testX, testy)
+prediction = dt.predict(testX)
 
+report = classification_report(testy, prediction, digits=5)
+print(report)
+
+score = dt.score(testX, testy)
 print("Score is " + str(score))
