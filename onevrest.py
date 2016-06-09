@@ -12,11 +12,11 @@ import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 import timeit
 
 # Load in the testing and training datasets
-trainFull = pd.read_csv("data/train.csv", nrows=1000000)
+trainFile = pd.read_csv("data/train.csv", nrows=1000000)
 
 # Take subsets of the datasets for training and testing
-train = trainFull[:800000].sample(100000)
-test_set = trainFull[800000:].sample(100000)
+trainFull = trainFile[:800000]
+test_set = trainFile[800000:]
 
 # Set a list of features to be considered in the tree
 features = trainFull.columns.values.tolist()
@@ -31,7 +31,7 @@ start_time = timeit.default_timer()
 # Create and fit a decision tree to the set of data in those features
 y = trainFull["hotel_cluster"] 
 X = trainFull[features]
-ovr = OneVsRestClassifier(RandomForestClassifier(n_estimators=10, n_jobs=-1, max_features=None), n_jobs=-1)
+ovr = OneVsRestClassifier(RandomForestClassifier(n_estimators=10, n_jobs=-1, max_features=None, min_samples_split=250), n_jobs=-1)
 ovr.fit(X, y)
 
 # Measure ability to predict the right hotel clust for a new subset
