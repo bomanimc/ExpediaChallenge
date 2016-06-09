@@ -3,6 +3,7 @@ from __future__ import print_function
 import os
 import subprocess
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
 
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
@@ -35,9 +36,13 @@ print("Unique Classes: {}".format(rf.classes_))
 # Print feature importances
 print(rf.feature_importances_)
 
-# Score ability to predict the right hotel clust for a new subset
+# Measure ability to predict the right hotel clust for a new subset
 testX = test_set[features]
 testy = test_set["hotel_cluster"]
-score = rf.score(testX, testy)
+prediction = rf.predict(testX)
 
+report = classification_report(testy, prediction, digits=5)
+print(report)
+
+score = rf.score(testX, testy)
 print("Score is " + str(score))
