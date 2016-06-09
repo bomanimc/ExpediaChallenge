@@ -9,6 +9,8 @@ from sklearn.metrics import classification_report
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 
+import timeit
+
 def visualize_tree(tree, feature_names):
     """Create tree png using graphviz.
 
@@ -43,6 +45,8 @@ features = [column for column in features if column not in removelist]
 print("The features considered are:")
 print(features)
 
+start_time = timeit.default_timer()
+
 # Create and fit a decision tree to the set of data in those features
 y = trainFull["hotel_cluster"] 
 X = trainFull[features]
@@ -62,6 +66,9 @@ prediction = dt.predict(testX)
 
 report = classification_report(testy, prediction, digits=5)
 print(report)
+
+elapsed = timeit.default_timer() - start_time
+print(elapsed)
 
 score = dt.score(testX, testy)
 print("Score is " + str(score))
