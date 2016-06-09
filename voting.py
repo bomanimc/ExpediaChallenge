@@ -5,6 +5,7 @@ import subprocess
 from sklearn.ensemble import VotingClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import f1_score
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.metrics import classification_report
@@ -37,10 +38,10 @@ y = trainFull["hotel_cluster"]
 X = trainFull[features]
 
 rf = RandomForestClassifier(n_estimators=20, n_jobs=-1, max_features=None, min_samples_split=250)
-kn = KNeighborsClassifier(n_neighbors=25, weights='distance', algorithm='kd_tree', n_jobs=-1)
 ovr = OneVsRestClassifier(RandomForestClassifier(n_estimators=10, n_jobs=-1, max_features=None, min_samples_split=250), n_jobs=-1)
+dt = DecisionTreeClassifier(min_samples_split=250, criterion="entropy")
 
-vc = VotingClassifier(estimators=[('kn', kn), ('rf', rf), ('ovr', ovr)], voting='hard')
+vc = VotingClassifier(estimators=[('rf', rf), ('ovr', ovr), ('dt', dt)], voting='hard')
 vc.fit(X, y)
 
 # Measure ability to predict the right hotel clust for a new subset
