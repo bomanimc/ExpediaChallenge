@@ -31,11 +31,11 @@ def visualize_tree(tree, feature_names):
              "produce visualization")
 
 # Load in the testing and training datasets
-trainFull = pd.read_csv("data/train.csv", nrows=1000000)
+trainFile = pd.read_csv("data/train.csv", nrows=1000000)
 
 # Take subsets of the datasets for training and testing
-train = trainFull[:800000].sample(100000)
-test_set = trainFull[800000:].sample(100000)
+trainFull= trainFile[:800000]
+test_set = trainFile[800000:]
 
 # Set a list of features to be considered in the tree
 features = trainFull.columns.values.tolist()
@@ -50,7 +50,7 @@ start_time = timeit.default_timer()
 # Create and fit a decision tree to the set of data in those features
 y = trainFull["hotel_cluster"] 
 X = trainFull[features]
-dt = DecisionTreeClassifier(min_samples_split=20)
+dt = DecisionTreeClassifier(min_samples_split=250, criterion="entropy")
 dt.fit(X, y)
 
 # Make a visualization of the decision tree
