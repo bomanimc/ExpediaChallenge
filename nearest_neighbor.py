@@ -11,11 +11,12 @@ import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 import timeit
 
 # Load in the testing and training datasets
-trainFull = pd.read_csv("data/train.csv", nrows=1000000)
+trainFile = pd.read_csv("data/train.csv", nrows=1000000)
 
 # Take subsets of the datasets for training and testing
-train = trainFull[:800000].sample(100000)
-test_set = trainFull[800000:].sample(100000)
+# train = trainFull[:800000].sample(100000)
+test_set = trainFile[800000:]
+trainFull  = trainFile[:800000]
 
 # Set a list of features to be considered in the tree
 features = trainFull.columns.values.tolist()
