@@ -15,8 +15,10 @@ trainFull = pd.read_csv("data/train.csv", nrows=1000000)
 start_time = timeit.default_timer()
 
 # Take subsets of the datasets for training and testing
-train = trainFull[:800000].sample(100000)
-test_set = trainFull[800000:].sample(100000)
+# train = trainFull[:800000].sample(100000)
+# test_set = trainFull[800000:].sample(100000)
+train = trainFull[:800000]
+test_set = trainFull[800000:]
 
 # Measure ability to predict the right hotel clust for a new subset
 testy = test_set["hotel_cluster"]
